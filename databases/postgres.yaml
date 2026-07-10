@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
+  namespace: microservice-app
 spec:
   selector:
     matchLabels:
@@ -29,11 +30,19 @@ spec:
               value: "postgres"
           ports:
             - containerPort: 5432
+          volumeMounts:
+            - name: init-scripts
+              mountPath: /docker-entrypoint-initdb.d/
+      volumes:
+        - name: init-scripts
+          configMap:
+            name: postgres-init-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: postgres-service
+  namespace: microservice-app
 spec:
   selector:
     app: postgres

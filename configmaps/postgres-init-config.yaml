@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-config
+  namespace: microservice-app
+data:
+  init-databases.sql: |
+    CREATE DATABASE auth_db;
+    CREATE DATABASE userservice_db;
+    CREATE DATABASE order_db;

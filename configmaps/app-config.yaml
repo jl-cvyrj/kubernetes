@@ -5,7 +5,6 @@ metadata:
   namespace: microservice-app
 data:
   SPRING_PROFILES_ACTIVE: "prod"
-  DB_URL: "jdbc:postgresql://postgres-service:5432/payment"
   AUTH_DB_URL: "jdbc:postgresql://postgres-service:5432/auth_db"
   USER_DB_URL: "jdbc:postgresql://postgres-service:5432/userservice_db"
   ORDER_DB_URL: "jdbc:postgresql://postgres-service:5432/order_db"
