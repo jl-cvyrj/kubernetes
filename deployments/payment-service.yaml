@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+  namespace: microservice-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    metadata:
+      labels:
+        app: payment-service
+    spec:
+      containers:
+      - name: payment-service
+        image: payment-service:1.0
+        ports:
+        - containerPort: 8088
+        livenessProbe:
+          httpGet: {path: /actuator/health/liveness, port: 8088}
+          initialDelaySeconds: 40
+          periodSeconds: 10
+        readinessProbe:
+          httpGet: {path: /actuator/health/readiness, port: 8088}
+          initialDelaySeconds: 20
+          periodSeconds: 5
+        env:
+        - name: JWT_SECRET
+          valueFrom: {secretKeyRef: {name: app-secrets, key: JWT_SECRET}}
+        - name: SPRING_DATA_MONGODB_URI
+          valueFrom: {secretKeyRef: {name: app-secrets, key: MONGO_URI}}
+        - name: SPRING_MAIN_ALLOW_BEAN_DEFINITION_OVERRIDING
+          value: "true"
