@@ -16,6 +16,7 @@ spec:
       containers:
         - name: auth-service
           image: auth-service:1.0
+          imagePullPolicy: Never
           ports:
             - containerPort: 8082
           livenessProbe:
