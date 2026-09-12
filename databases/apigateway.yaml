@@ -16,15 +16,14 @@ spec:
       containers:
         - name: apigateway
           image: apigateway:1.0
+          envFrom:
+            - configMapRef: {name: app-config}
           env:
-            - name: ORDER_SERVICE_URI
-              value: "http://order-service:8084"
-            - name: AUTH_SERVICE_URI
-              value: "http://auth-service:8082"
-            - name: USER_SERVICE_URI
-              value: "http://user-service:8080"
-            - name: PAYMENT_SERVICE_URI
-              value: "http://payment-service:8088"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: JWT_SECRET
           ports:
             - containerPort: 8068
           livenessProbe:
