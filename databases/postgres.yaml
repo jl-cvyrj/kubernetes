@@ -33,10 +33,28 @@ spec:
           volumeMounts:
             - name: init-scripts
               mountPath: /docker-entrypoint-initdb.d/
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
       volumes:
         - name: init-scripts
           configMap:
             name: postgres-init-config
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: microservice-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
